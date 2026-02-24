@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Scan {
+  id           String       @id @default(uuid())
+  target       String
+  scanType     String       @map("scan_type")
+  portRange    String       @map("port_range")
+  startedAt    DateTime     @default(now()) @map("started_at")
+  completedAt  DateTime?    @map("completed_at")
+  status       String       @default("pending")
+  results      ScanResult[]
+  aiReport     AiReport?
+
+  @@map("scans")
+}
+
+model ScanResult {
+  id          String   @id @default(uuid())
+  scanId      String   @map("scan_id")
+  port        Int
+  status      String
+  serviceName String?  @map("service_name")
+  banner      String?
+  riskLevel   String?  @map("risk_level")
+  scan        Scan     @relation(fields: [scanId], references: [id])
+
+  @@index([scanId])
+  @@map("scan_results")
+}
+
+model AiReport {
+  id             String   @id @default(uuid())
+  scanId         String   @unique @map("scan_id")
+  riskScore      Int      @map("risk_score")
+  summary        String
+  recommendations String
+  scan           Scan     @relation(fields: [scanId], references: [id])
+
+  @@map("ai_reports")
+}
