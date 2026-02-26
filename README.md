@@ -1,4 +1,4 @@
-# 🚀 CyberScan X - Autonomous Vulnerability Discovery Dashboard
+<h1 align="center">🚀 CyberScan X - Autonomous Vulnerability Discovery Dashboard</h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react" />
